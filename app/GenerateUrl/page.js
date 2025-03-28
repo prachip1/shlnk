@@ -110,7 +110,7 @@ const GenerateUrl = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-6">
+    <div className="flex flex-col gap-4 p-6 mt-8">
       <Toaster position="top-right" />
       {isLoaded ? (
         <>
@@ -190,7 +190,7 @@ const GenerateUrl = () => {
                 className="w-full sm:w-[30em] rounded-xl p-6 border border-gray-300 text-gray-300 text-lg bg-gray-800"
                 placeholder="Paste your URL here!"
               />
-              <a href="/signup" className="text-pink-200 bg-pink-600 p-6 rounded-2xl">
+              <a href="/signup" className="text-pink-200 bg-pink-600 text-center p-6 rounded-2xl">
                 Short URL
               </a>
             </div>

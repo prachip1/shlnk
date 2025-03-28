@@ -40,7 +40,7 @@ export default function Navbar() {
                     <Link href="/dashboard" className="p-4 rounded-xl text-gray-200 hover:underline">
                         Dashboard
                     </Link>
-                    <button className="p-2 rounded-xl ml-4 text-gray-200 hover:underline">
+                    <button className="p-2 rounded-lg ml-4 text-gray-200 hover:underline">
                         <Link href="/">Short URL</Link>
                     </button>
                 </div>
@@ -52,15 +52,15 @@ export default function Navbar() {
                     <UserButton />
                 </SignedIn>
                 <SignedOut>
-                    <Link
+                  {/**   <Link
                         href="/signup"
-                        className="bg-gray-300 text-gray-950 hover:text-gray-800 p-2 rounded-xl"
+                        className="bg-gray-300 text-gray-950 rounded-lg hover:text-gray-800 p-2"
                     >
                         Short URL
-                    </Link>
+                    </Link>*/}
                     <Link
                         href="/signin"
-                        className="text-gray-300 hover:text-gray-800"
+                        className="bg-gray-300 text-gray-950 rounded-lg hover:text-gray-800 p-2"
                     >
                         Log In
                     </Link>
