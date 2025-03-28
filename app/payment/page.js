@@ -6,6 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { FaCheck, FaStar, FaBolt } from "react-icons/fa";
+import Link from "next/link";
 
 const PaymentPage = () => {
   const { user, isLoaded } = useUser();
@@ -252,9 +253,9 @@ const PaymentPage = () => {
       </div>
       <p className="text-gray-400 text-center mt-8">
         Already have a plan?{" "}
-        <a href="/" className="text-pink-300 hover:underline hover:text-pink-600">
+        <Link to="/" className="text-pink-300 hover:underline hover:text-pink-600">
           Generate URLs
-        </a>
+        </Link>
       </p>
     </div>
   );

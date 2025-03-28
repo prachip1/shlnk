@@ -12,6 +12,7 @@ import {
 } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
     const { user, isLoaded } = useUser();
@@ -33,7 +34,7 @@ export default function Navbar() {
         <nav className="flex justify-between items-center p-4 h-16 mt-4">
             {/* Left Side: Logo */}
             <Link href="/" className="flex gap-2 items-center text-base font-semibold text-gray-300">
-            <img src="urllogo.png" className="w-[30px] h-[30px]"/> <p>URLtoSmall</p>
+            <Image src="/urllogo.png" width={40} height={40} className=""/> <p>URLtoSmall</p>
             </Link>
             {user && (
                 <div className="flex items-center gap-2">
