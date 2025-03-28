@@ -3,18 +3,22 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { Chart } from "chart.js/auto";
 import axios from "axios";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
+import { MdContentCopy } from "react-icons/md";
 
 export default function Dashboard() {
   const { user, isLoaded } = useUser();
+  const router = useRouter();
   const [links, setLinks] = useState([]);
   const [clickData, setClickData] = useState({ labels: [], data: [] });
-  const [userData, setUserData] = useState(null); // Store user plan data
-  const [loading, setLoading] = useState(true); // Track loading state
-  const chartInstanceRef = useRef(null); // Store the chart instance
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isCanvasMounted, setIsCanvasMounted] = useState(false);
+  const chartInstanceRef = useRef(null);
 
   // Fetch user links and plan data
   useEffect(() => {
@@ -23,7 +27,6 @@ export default function Dashboard() {
     async function fetchData() {
       setLoading(true);
       try {
-        // Fetch user links
         const linksResponse = await axios.get(`/api/links?userId=${user.id}`, { withCredentials: true });
         const userLinks = linksResponse.data.links;
         setLinks(userLinks);
@@ -35,12 +38,13 @@ export default function Dashboard() {
           });
           return acc;
         }, {});
-        setClickData({
+        const newClickData = {
           labels: Object.keys(clicksByDay),
           data: Object.values(clicksByDay),
-        });
+        };
+        console.log("clickData - Labels:", newClickData.labels, "Data:", newClickData.data);
+        setClickData(newClickData);
 
-        // Fetch user plan data
         const planResponse = await fetch(`/api/get-user-plan?userId=${user.id}`);
         const planData = await planResponse.json();
         setUserData(planData);
@@ -54,16 +58,47 @@ export default function Dashboard() {
     fetchData();
   }, [isLoaded, user]);
 
-  // Render the chart
+  // Set isCanvasMounted when the canvas is available
   useEffect(() => {
-    if (clickData.labels.length && clickData.data.length) {
-      if (chartInstanceRef.current) {
-        chartInstanceRef.current.destroy();
-        chartInstanceRef.current = null;
-      }
+    if (loading) return;
 
+    const checkCanvas = () => {
       const canvas = document.getElementById("clicksChart");
       if (canvas) {
+        console.log("Canvas element mounted:", canvas);
+        setIsCanvasMounted(true);
+      } else {
+        console.log("Canvas element not found, retrying...");
+        setTimeout(checkCanvas, 100); // Retry after 100ms
+      }
+    };
+
+    checkCanvas();
+  }, [loading]);
+
+  // Render the chart
+  useEffect(() => {
+    if (!isCanvasMounted || !clickData.labels.length || !clickData.data.length) {
+      console.log("Chart not initialized - Conditions not met:", {
+        isCanvasMounted,
+        hasLabels: clickData.labels.length,
+        hasData: clickData.data.length,
+      });
+      return;
+    }
+
+    console.log("Initializing chart with clickData:", clickData);
+
+    if (chartInstanceRef.current) {
+      console.log("Destroying previous chart instance");
+      chartInstanceRef.current.destroy();
+      chartInstanceRef.current = null;
+    }
+
+    const canvas = document.getElementById("clicksChart");
+    if (canvas) {
+      console.log("Canvas found for chart initialization:", canvas);
+      try {
         chartInstanceRef.current = new Chart(canvas, {
           type: "bar",
           data: {
@@ -77,9 +112,9 @@ export default function Dashboard() {
                 backgroundColor: "rgba(255, 105, 180, 0.5)",
                 borderColor: "rgba(255, 182, 193, 1)",
                 borderWidth: 1,
-                barThickness: 60,
-                barPercentage: 0.9,
-                categoryPercentage: 0.8,
+                barThickness: 30, // Reduced for better proportion
+              barPercentage: 0.6, // Reduced to add gaps between bars
+              categoryPercentage: 0.6, // Reduced to add gaps between categories
               },
             ],
           },
@@ -122,22 +157,27 @@ export default function Dashboard() {
                 bottom: 0,
               },
             },
-            responsive: true, // Make the chart responsive
-            maintainAspectRatio: false, // Allow the chart to adjust its aspect ratio
+            responsive: true,
+            maintainAspectRatio: false,
           },
         });
+        console.log("Chart successfully initialized:", chartInstanceRef.current);
+      } catch (error) {
+        console.error("Error initializing chart:", error);
       }
+    } else {
+      console.error("Canvas element not found during chart initialization!");
     }
 
     return () => {
       if (chartInstanceRef.current) {
+        console.log("Cleaning up chart instance on unmount");
         chartInstanceRef.current.destroy();
         chartInstanceRef.current = null;
       }
     };
-  }, [clickData]);
+  }, [clickData, isCanvasMounted]);
 
-  // Copy to clipboard function
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => toast.success("Copied!"));
   };
@@ -164,15 +204,27 @@ export default function Dashboard() {
             </p>
             <p>Remaining Links: {userData.remainingLinks || 0}</p>
             <p>Total Links Generated: {(userData.links || []).length}</p>
+            {userData.remainingLinks <= 0 && (
+              <button
+                onClick={() => router.push("/payment")}
+                className="mt-4 bg-blue-500 text-white rounded-xl px-4 py-2 hover:bg-blue-600"
+              >
+                Purchase a New Plan
+              </button>
+            )}
           </div>
         ) : (
-          <p className="text-gray-300">
-            No plan purchased yet. Go to the{" "}
-            <a href="/generateurl" className="text-blue-500 hover:underline">
-              Generate URL
-            </a>{" "}
-            page to purchase a plan.
-          </p>
+          <div className="flex flex-col gap-2">
+            <p className="text-gray-300">
+              No plan purchased yet.
+            </p>
+            <button
+              onClick={() => router.push("/payment")}
+              className="bg-blue-500 text-white rounded-xl px-4 py-2 hover:bg-blue-600"
+            >
+              Purchase a Plan
+            </button>
+          </div>
         )}
       </div>
 
@@ -185,10 +237,10 @@ export default function Dashboard() {
           </h2>
           {loading ? (
             <p className="text-gray-300 animate-pulse">Loading chart...</p>
-          ) : clickData.labels.length === 0 ? (
+          ) : clickData?.labels.length === 0 ? (
             <p className="text-gray-300">No click data available.</p>
           ) : (
-            <div className="w-full h-[300px]">
+            <div className="w-full h-[300px] bg-gray-800 rounded-lg p-4">
               <canvas id="clicksChart" className="w-full h-full"></canvas>
             </div>
           )}
@@ -228,9 +280,9 @@ export default function Dashboard() {
                               `${process.env.NEXT_PUBLIC_BASE_URL}/api/redirect/${link.shortUrl}`
                             )
                           }
-                          className="bg-blue-500 text-white rounded-xl px-2 py-1 text-sm"
+                          className="flex gap-2 bg-gray-200 text-gray-950 rounded px-4 py-2 cursor-pointer text-sm"
                         >
-                          Copy
+                         <MdContentCopy /> Copy
                         </button>
                       </div>
                     </div>
@@ -247,7 +299,7 @@ export default function Dashboard() {
                           toast.error("Failed to delete link.");
                         }
                       }}
-                      className="bg-indigo-300 border-1 border-indigo-600 text-gray-800 font-semibold text-base rounded-xl px-4 py-2 cursor-pointer hover:bg-indigo-400"
+                      className="bg-indigo-300 border-1 border-indigo-600 text-gray-800 font-semibold text-base rounded px-4 py-2 cursor-pointer hover:bg-indigo-400"
                     >
                       Delete
                     </button>

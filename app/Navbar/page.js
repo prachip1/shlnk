@@ -21,7 +21,7 @@ export default function Navbar() {
         return (
             <nav className="flex justify-between items-center p-4 h-16 mt-4">
                 <Link href="/" className="text-lg font-medium text-gray-300">
-                    URLToSmall
+                   <p>🍩URLToSmall</p>
                 </Link>
                 <div className="text-gray-300">Loading...</div>
             </nav>

@@ -155,7 +155,7 @@ const GenerateUrl = () => {
               <button
                 onClick={generateShortUrl}
                 disabled={loading}
-                className={`rounded-xl p-2 cursor-pointer bg-radial from-pink-400 from-40% to-fuchsia-700 text-gray-900 ${
+                className={`rounded-xl p-4 text-lg cursor-pointer bg-radial from-pink-400 from-40% to-fuchsia-700 text-gray-900 ${
                   loading ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
                 }`}
               >
@@ -185,7 +185,7 @@ const GenerateUrl = () => {
               )}
             </>
           ) : (
-            <div className="text-gray-300 flex gap-4">
+            <div className=" text-gray-300 flex flex-col lg:flex-row gap-4">
               <input
                 className="w-full sm:w-[30em] rounded-xl p-6 border border-gray-300 text-gray-300 text-lg bg-gray-800"
                 placeholder="Paste your URL here!"
