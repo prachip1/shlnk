@@ -127,7 +127,7 @@ const PaymentPage = () => {
           const verifyResult = await verifyResponse.json();
           if (verifyResult.success) {
             toast.success("Payment successful! Redirecting...");
-            router.push("/generateurl");
+            router.push("/");
           } else {
             toast.error("Payment verification failed.");
           }
@@ -252,7 +252,7 @@ const PaymentPage = () => {
       </div>
       <p className="text-gray-400 text-center mt-8">
         Already have a plan?{" "}
-        <a href="/generateurl" className="text-pink-300 hover:underline hover:text-pink-600">
+        <a href="/" className="text-pink-300 hover:underline hover:text-pink-600">
           Generate URLs
         </a>
       </p>
