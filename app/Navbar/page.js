@@ -20,8 +20,9 @@ export default function Navbar() {
     if (!isLoaded) {
         return (
             <nav className="flex justify-between items-center p-4 h-16 mt-4">
-                <Link href="/" className="text-lg font-medium text-gray-300">
-                   <p>🍩URLToSmall</p>
+               
+                <Link href="/" className="flex gap-2 text-base font-medium text-gray-300">
+                URLToSmall
                 </Link>
                 <div className="text-gray-300">Loading...</div>
             </nav>
@@ -31,8 +32,8 @@ export default function Navbar() {
     return (
         <nav className="flex justify-between items-center p-4 h-16 mt-4">
             {/* Left Side: Logo */}
-            <Link href="/" className="text-lg font-medium text-gray-300">
-                URLToSmall
+            <Link href="/" className="flex gap-2 items-center text-base font-semibold text-gray-300">
+            <img src="urllogo.png" className="w-[30px] h-[30px]"/> <p>URLtoSmall</p>
             </Link>
             {user && (
                 <div className="flex items-center gap-2">
