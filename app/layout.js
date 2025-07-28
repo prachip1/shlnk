@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
-  title: "urltosmallurl",
+  title: "shlnk",
   description: "A URL shortener",
 };
 

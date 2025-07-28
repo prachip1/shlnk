@@ -23,7 +23,7 @@ export default function Navbar() {
             <nav className="flex justify-between items-center p-4 h-16 mt-4">
                
                 <Link href="/" className="flex gap-2 text-base font-medium text-gray-300">
-                URLToSmall
+                Shlnk
                 </Link>
                 <div className="text-gray-300">Loading...</div>
             </nav>
@@ -34,7 +34,7 @@ export default function Navbar() {
         <nav className="flex justify-between items-center p-4 h-16 mt-4">
             {/* Left Side: Logo */}
             <Link href="/" className="flex gap-2 items-center text-base font-semibold text-gray-300">
-            <Image src="/urllogo.png" width={40} height={40} className=""/> <p>URLtoSmall</p>
+            <Image src="/urllogo.png" width={40} height={40} className=""/> <p>Shlnk</p>
             </Link>
             {user && (
                 <div className="flex items-center gap-2">
