@@ -116,7 +116,7 @@ const GenerateUrl = () => {
         <>
           {user ? (
             <>
-              <p className="text-gray-300">Signed in as: {user.emailAddresses[0]?.emailAddress}</p>
+            {/**   <p className="text-gray-300">Signed in as: {user.emailAddresses[0]?.emailAddress}</p>*/}
 
               <p className="text-gray-300">
                 You have {remainingLinks} links remaining in your plan.
@@ -131,7 +131,7 @@ const GenerateUrl = () => {
                     setError("");
                   }
                 }}
-                className={`w-full sm:w-[30em] rounded-xl p-6 border text-gray-300 text-lg bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full sm:w-[30em] rounded-sm px-6 py-4 border text-gray-600 text-lg bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   error && url && !isValidUrl(url) ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Paste your URL here!"
@@ -147,9 +147,9 @@ const GenerateUrl = () => {
                   showTimeSelect
                   dateFormat="dd-MM-yyyy HH:mm"
                   placeholderText="dd-mm-yyyy --:--"
-                  className="w-full sm:w-[30em] rounded-xl p-6 border border-gray-300 text-gray-300 text-lg bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  calendarClassName="bg-gray-800 text-gray-300 border-gray-300"
-                  popperClassName="text-gray-300"
+                  className="w-full sm:w-[30em] rounded-sm px-6 py-4 border border-black text-gray-600 text-lg bg-gray-200 focus:outline-none focus:ring-2 focus:ring-black"
+                  calendarClassName="bg-white text-gray-800 border-black rounded-lg"
+                  popperClassName="bg-white text-gray-800 border-black"
                 />
               </div>
               <button
