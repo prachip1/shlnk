@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast, { Toaster } from "react-hot-toast";
@@ -243,12 +244,12 @@ const GenerateUrl = () => {
                   placeholder="https://example.com"
                   disabled
                 />
-                <a 
+                <Link 
                   href="/signup" 
                   className="px-8 py-4 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-fuchsia-700 transition-all duration-200 text-center"
                 >
                   Get Started
-                </a>
+                </Link>
               </div>
             </div>
           )}
