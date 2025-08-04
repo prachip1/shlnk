@@ -13,6 +13,7 @@ import {
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
+import { FiHome, FiBarChart2 } from "react-icons/fi";
 
 export default function Navbar() {
     const { user, isLoaded } = useUser();
@@ -20,52 +21,80 @@ export default function Navbar() {
     // Show a loading state until isLoaded is true
     if (!isLoaded) {
         return (
-            <nav className="flex justify-between items-center p-4 h-16 mt-4">
-               
-                <Link href="/" className="flex gap-2 text-base font-medium text-gray-300">
-                Shlnk
-                </Link>
-                <div className="text-gray-300">Loading...</div>
+            <nav className="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-md border-b border-gray-800">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center h-16">
+                        <Link href="/" className="flex items-center gap-3 text-xl font-bold text-gray-100">
+                            <Image src="/urllogo.png" width={32} height={32} alt="Shlnk" className="rounded-lg" />
+                            <span>Shlnk</span>
+                        </Link>
+                        <div className="w-6 h-6 border-2 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                </div>
             </nav>
         );
     }
 
     return (
-        <nav className="flex justify-between items-center p-4 h-16 mt-4">
-            {/* Left Side: Logo */}
-            <Link href="/" className="flex gap-2 items-center text-base font-semibold text-gray-300">
-            <Image src="/urllogo.png" width={40} height={40} className=""/> <p>Shlnk</p>
-            </Link>
-            {user && (
-                <div className="flex items-center gap-2">
-                    <Link href="/dashboard" className="p-4 rounded-xl text-gray-200 hover:underline">
-                        Dashboard
+        <nav className="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-md border-b border-gray-800">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16">
+                    {/* Left Side: Logo */}
+                    <Link href="/" className="flex items-center gap-3 text-xl font-bold text-gray-100 hover:text-pink-400 transition-colors">
+                        <Image src="/urllogo.png" width={32} height={32} alt="Shlnk" className="rounded-lg" />
+                        <span>Shlnk</span>
                     </Link>
-                    <button className="p-2 rounded-lg ml-4 text-gray-200 hover:underline">
-                        <Link href="/">Short URL</Link>
-                    </button>
-                </div>
-            )}
 
-            {/* Right Side: Auth Links */}
-            <div className="flex items-center gap-4">
-                <SignedIn>
-                    <UserButton />
-                </SignedIn>
-                <SignedOut>
-                  {/**   <Link
-                        href="/signup"
-                        className="bg-gray-300 text-gray-950 rounded-lg hover:text-gray-800 p-2"
-                    >
-                        Short URL
-                    </Link>*/}
-                    <Link
-                        href="/signin"
-                        className="bg-gray-300 text-gray-950 rounded-lg hover:text-gray-800 p-2"
-                    >
-                        Log In
-                    </Link>
-                </SignedOut>
+                    {/* Center: Navigation Links (for signed in users) */}
+                    {user && (
+                        <div className="hidden md:flex items-center gap-1">
+                            <Link 
+                                href="/" 
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-300 hover:text-pink-400 hover:bg-gray-800/50 transition-all duration-200"
+                            >
+                                <FiHome className="w-4 h-4" />
+                                <span>Home</span>
+                            </Link>
+                            <Link 
+                                href="/dashboard" 
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-300 hover:text-pink-400 hover:bg-gray-800/50 transition-all duration-200"
+                            >
+                                <FiBarChart2 className="w-4 h-4" />
+                                <span>Dashboard</span>
+                            </Link>
+                        </div>
+                    )}
+
+                    {/* Right Side: Auth */}
+                    <div className="flex items-center gap-3">
+                        <SignedIn>
+                            <UserButton 
+                                appearance={{
+                                    elements: {
+                                        avatarBox: "w-8 h-8",
+                                        userButtonPopoverCard: "bg-gray-800 border-gray-700",
+                                        userButtonPopoverActionButton: "text-gray-300 hover:bg-gray-700",
+                                        userButtonPopoverActionButtonText: "text-gray-300"
+                                    }
+                                }}
+                            />
+                        </SignedIn>
+                        <SignedOut>
+                            <Link
+                                href="/signin"
+                                className="px-4 py-2 text-gray-300 hover:text-pink-400 transition-colors font-medium"
+                            >
+                                Sign In
+                            </Link>
+                            <Link
+                                href="/signup"
+                                className="px-4 py-2 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:from-pink-600 hover:to-fuchsia-700 transition-all duration-200 font-medium"
+                            >
+                                Get Started
+                            </Link>
+                        </SignedOut>
+                    </div>
+                </div>
             </div>
         </nav>
     );

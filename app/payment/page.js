@@ -253,7 +253,7 @@ const PaymentPage = () => {
       </div>
       <p className="text-gray-400 text-center mt-8">
         Already have a plan?{" "}
-        <Link to="/" className="text-pink-300 hover:underline hover:text-pink-600">
+        <Link href="/" className="text-pink-300 hover:underline hover:text-pink-600">
           Generate URLs
         </Link>
       </p>
